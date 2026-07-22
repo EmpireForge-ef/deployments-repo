@@ -6,11 +6,17 @@ spec:
   serviceAccountName: ghc-nsp-8e31b964-main-notes-flux
   chart:
     spec:
-      version: "0.1.0-sha.d578a8d"
+      version: "0.1.0-sha.d941952"
       sourceRef:
         namespace: ghc-nsp-8e31b964-main-notes
   values:
     host: notes.8e31b964.dev.gh0stcloud.de
+    auth:
+      mode: oidc
+    oidc:
+      issuer: https://kc-notes.8e31b964.dev.gh0stcloud.de/realms/notes
+      clientId: notes-web
+      audience: notes-web
     backend:
       image:
         repository: ghcr.io/empireforge-ef/notes-backend
