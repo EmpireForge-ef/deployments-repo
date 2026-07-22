@@ -24,4 +24,4 @@ spec:
     frontend:
       image:
         repository: ghcr.io/empireforge-ef/notes-frontend
-        tag: sha-cc8c3be
+        tag: sha-232e96e
