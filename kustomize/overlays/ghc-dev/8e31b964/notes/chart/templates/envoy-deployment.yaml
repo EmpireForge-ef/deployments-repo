@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-envoy
+  labels:
+    app.kubernetes.io/name: notes-envoy
+    app.kubernetes.io/part-of: notes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: notes-envoy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: notes-envoy
+        app.kubernetes.io/part-of: notes
+      annotations:
+        checksum/envoy-config: {{ include (print $.Template.BasePath "/envoy-configmap.yaml") . | sha256sum }}
+    spec:
+      serviceAccountName: {{ .Values.tenant.workloadServiceAccount }}
+      securityContext:
+        {{- include "notes.podSecurityContext" . | nindent 8 }}
+      containers:
+        - name: envoy
+          image: "{{ .Values.envoy.image.repository }}:{{ .Values.envoy.image.tag }}"
+          args: ["-c", "/etc/envoy/envoy.yaml", "--log-level", "info"]
+          ports:
+            - name: grpc-web
+              containerPort: 4005
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /etc/envoy
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            {{- include "notes.containerSecurityContext" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.envoy.resources | nindent 12 }}
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: notes-envoy-config
+        - name: tmp
+          emptyDir: {}

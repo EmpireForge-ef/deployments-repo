@@ -1,0 +1,15 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: notes
+spec:
+  values:
+    host: notes.8e31b964.dev.gh0stcloud.de
+    backend:
+      image:
+        repository: ghcr.io/empireforge-ef/notes-backend
+        tag: sha-cc8c3be
+    frontend:
+      image:
+        repository: ghcr.io/empireforge-ef/notes-frontend
+        tag: sha-cc8c3be
