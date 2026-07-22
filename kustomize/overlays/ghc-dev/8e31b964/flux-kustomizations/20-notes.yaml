@@ -14,4 +14,4 @@ spec:
     name: ghc-git-8e31b964-xeye-li
     namespace: flux-system
   timeout: 10m
-  wait: true
+  wait: false

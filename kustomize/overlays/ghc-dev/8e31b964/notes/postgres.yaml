@@ -1,0 +1,45 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: notes-db
+  namespace: ghc-nsp-8e31b964-main-notes
+spec:
+  instances: 1
+  seccompProfile:
+    type: RuntimeDefault
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 26
+    runAsGroup: 26
+    fsGroup: 26
+  securityContext:
+    allowPrivilegeEscalation: false
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+        - r
+  bootstrap:
+    initdb:
+      database: notes
+      owner: notes
+      secret:
+        name: notes-db-credentials
+      localeCollate: C
+      localeCType: C
+  storage:
+    size: 10Gi
+    storageClass: hcloud-volumes

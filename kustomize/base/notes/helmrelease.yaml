@@ -3,13 +3,12 @@ kind: HelmRelease
 metadata:
   name: notes
 spec:
-  interval: 10m
   releaseName: notes
-  serviceAccountName: ghc-nsp-8e31b964-main-notes-flux
+  interval: 10m
   chart:
     spec:
       chart: notes
-      version: "0.1.0-sha.7841795"
+      version: "0.1.0"
       sourceRef:
         kind: HelmRepository
         name: notes-charts
@@ -19,3 +18,4 @@ spec:
   upgrade:
     remediation:
       retries: 3
+    cleanupOnFail: true

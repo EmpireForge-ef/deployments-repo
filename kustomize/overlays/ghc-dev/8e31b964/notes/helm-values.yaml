@@ -3,9 +3,12 @@ kind: HelmRelease
 metadata:
   name: notes
 spec:
+  serviceAccountName: ghc-nsp-8e31b964-main-notes-flux
   chart:
     spec:
-      version: "0.1.0-sha.7841795"
+      version: "0.1.0-sha.60b272f"
+      sourceRef:
+        namespace: ghc-nsp-8e31b964-main-notes
   values:
     host: notes.8e31b964.dev.gh0stcloud.de
     backend:

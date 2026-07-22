@@ -4,7 +4,7 @@ metadata:
   name: notes-charts
 spec:
   type: oci
-  interval: 10m
+  interval: 1h
   url: oci://ghcr.io/empireforge-ef/charts
   secretRef:
     name: notes-registry-pull
