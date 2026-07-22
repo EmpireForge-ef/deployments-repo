@@ -32,6 +32,26 @@ spec:
     limits:
       cpu: 750m
       memory: 1Gi
+  # The operator's generated pod template does NOT satisfy the platform
+  # pod-security guardrails (restricted PSS); inject the required security
+  # context through the operator's supported escape hatch.
+  unsupported:
+    podTemplate:
+      spec:
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        containers:
+          - name: keycloak
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsNonRoot: true
+              capabilities:
+                drop:
+                  - ALL
+              seccompProfile:
+                type: RuntimeDefault
 ---
 apiVersion: k8s.keycloak.org/v2beta1
 kind: KeycloakRealmImport
