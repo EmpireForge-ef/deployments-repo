@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: notes-kc
+  namespace: ghc-nsp-8e31b964-main-notes
+  annotations:
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - kc-notes.8e31b964.dev.gh0stcloud.de
+      secretName: notes-kc-tls
+  rules:
+    - host: kc-notes.8e31b964.dev.gh0stcloud.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: notes-kc-service
+                port:
+                  number: 8080

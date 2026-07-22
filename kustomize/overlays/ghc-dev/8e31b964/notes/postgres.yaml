@@ -32,6 +32,12 @@ spec:
       disabledDefaultServices:
         - ro
         - r
+    roles:
+      - name: keycloak
+        ensure: present
+        login: true
+        passwordSecret:
+          name: notes-kc-db-credentials
   bootstrap:
     initdb:
       database: notes
@@ -43,3 +49,14 @@ spec:
   storage:
     size: 10Gi
     storageClass: hcloud-volumes
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: notes-db-keycloak
+  namespace: ghc-nsp-8e31b964-main-notes
+spec:
+  cluster:
+    name: notes-db
+  name: keycloak
+  owner: keycloak

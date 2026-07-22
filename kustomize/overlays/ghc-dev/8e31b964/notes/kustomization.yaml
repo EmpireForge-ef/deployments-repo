@@ -10,6 +10,9 @@ resources:
   - externalsecret-app.yaml
   - postgres.yaml
   - ingress.yaml
+  - externalsecret-kc-db.yaml
+  - keycloak.yaml
+  - ingress-kc.yaml
 
 patches:
   - path: helm-values.yaml

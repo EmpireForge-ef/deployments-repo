@@ -1,0 +1,81 @@
+apiVersion: k8s.keycloak.org/v2beta1
+kind: Keycloak
+metadata:
+  name: notes-kc
+  namespace: ghc-nsp-8e31b964-main-notes
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: notes-db-rw
+    port: 5432
+    database: keycloak
+    usernameSecret:
+      name: notes-kc-db-credentials
+      key: username
+    passwordSecret:
+      name: notes-kc-db-credentials
+      key: password
+  http:
+    httpEnabled: true
+  hostname:
+    hostname: https://kc-notes.8e31b964.dev.gh0stcloud.de
+    strict: false
+  proxy:
+    headers: xforwarded
+  ingress:
+    enabled: false
+  resources:
+    requests:
+      cpu: 300m
+      memory: 512Mi
+    limits:
+      cpu: 750m
+      memory: 1Gi
+---
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: notes-realm
+  namespace: ghc-nsp-8e31b964-main-notes
+spec:
+  keycloakCRName: notes-kc
+  realm:
+    realm: notes
+    enabled: true
+    registrationAllowed: true
+    registrationEmailAsUsername: true
+    loginWithEmailAllowed: true
+    resetPasswordAllowed: true
+    roles:
+      realm:
+        - name: user
+          description: Regular notes user
+        - name: admin
+          description: Notes administrator
+    defaultRoles:
+      - user
+    clients:
+      - clientId: notes-web
+        name: Notes Web
+        enabled: true
+        publicClient: true
+        protocol: openid-connect
+        standardFlowEnabled: true
+        directAccessGrantsEnabled: false
+        implicitFlowEnabled: false
+        fullScopeAllowed: true
+        redirectUris:
+          - "https://notes.8e31b964.dev.gh0stcloud.de/*"
+        webOrigins:
+          - "https://notes.8e31b964.dev.gh0stcloud.de"
+        attributes:
+          pkce.code.challenge.method: "S256"
+        protocolMappers:
+          - name: notes-audience
+            protocol: openid-connect
+            protocolMapper: oidc-audience-mapper
+            config:
+              included.client.audience: notes-web
+              access.token.claim: "true"
+              id.token.claim: "false"
