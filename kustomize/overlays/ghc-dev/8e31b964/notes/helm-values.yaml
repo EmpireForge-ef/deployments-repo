@@ -3,6 +3,9 @@ kind: HelmRelease
 metadata:
   name: notes
 spec:
+  chart:
+    spec:
+      version: "0.1.0-sha.7841795"
   values:
     host: notes.8e31b964.dev.gh0stcloud.de
     backend:

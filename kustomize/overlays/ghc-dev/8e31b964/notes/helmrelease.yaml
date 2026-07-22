@@ -8,12 +8,11 @@ spec:
   serviceAccountName: ghc-nsp-8e31b964-main-notes-flux
   chart:
     spec:
-      chart: ./kustomize/overlays/ghc-dev/8e31b964/notes/chart
-      reconcileStrategy: Revision
+      chart: notes
+      version: "0.1.0-sha.7841795"
       sourceRef:
-        kind: GitRepository
-        name: ghc-git-8e31b964-xeye-li
-        namespace: flux-system
+        kind: HelmRepository
+        name: notes-charts
   install:
     remediation:
       retries: 3

@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: notes-charts
+spec:
+  type: oci
+  interval: 10m
+  url: oci://ghcr.io/empireforge-ef/charts
+  secretRef:
+    name: notes-registry-pull
