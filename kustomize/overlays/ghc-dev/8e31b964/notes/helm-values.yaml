@@ -6,7 +6,7 @@ spec:
   serviceAccountName: ghc-nsp-8e31b964-main-notes-flux
   chart:
     spec:
-      version: "0.1.0-sha.60b272f"
+      version: "0.1.0-sha.d578a8d"
       sourceRef:
         namespace: ghc-nsp-8e31b964-main-notes
   values:

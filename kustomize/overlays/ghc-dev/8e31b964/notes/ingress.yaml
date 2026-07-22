@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: notes
+  namespace: ghc-nsp-8e31b964-main-notes
+  annotations:
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - notes.8e31b964.dev.gh0stcloud.de
+      secretName: notes-tls
+  rules:
+    - host: notes.8e31b964.dev.gh0stcloud.de
+      http:
+        paths:
+          - path: /grpc
+            pathType: Prefix
+            backend:
+              service:
+                name: notes-envoy
+                port:
+                  number: 4005
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: notes-frontend
+                port:
+                  number: 3000

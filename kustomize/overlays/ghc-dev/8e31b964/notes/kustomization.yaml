@@ -9,6 +9,7 @@ resources:
   - externalsecret-db.yaml
   - externalsecret-app.yaml
   - postgres.yaml
+  - ingress.yaml
 
 patches:
   - path: helm-values.yaml
